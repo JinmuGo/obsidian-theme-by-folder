@@ -1,94 +1,74 @@
-# Obsidian Sample Plugin
+# Theme by Folder
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Automatically switch Obsidian themes based on the folder of the opened note.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- **Auto Theme Switching**: Instantly changes your Obsidian theme when you open a note in a configured folder.
+- **Per-Folder Configuration**: Assign custom themes to specific vault folders.
+- **Fallback Theme**: Define a default theme to use when no folder mapping matches.
+- **Lightweight & Fast**: Minimal performance impact with simple path-based matching.
+- **User-Friendly UI**: Configure mappings directly in Obsidian’s Settings → Theme by Folder.
 
-## First time developing plugins?
+## Installation
 
-Quick starting guide for new plugin devs:
+### Manual Installation
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+1. Download or clone this repository into your vault’s plugins folder:
+    ```bash
+    git clone https://github.com/JinmuGo/obsidian-theme-by-folder .obsidian/plugins/theme-by-folder
+    ```
+2. In Obsidian, go to **Settings → Community Plugins** and enable **Theme by Folder**.
+3. Reload Obsidian if the plugin doesn’t appear immediately.
 
-## Releasing new releases
+### Via Community Plugins (BRAT)
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+You can use [BRAT (Beta Reviewer's Auto-update Tool)](https://github.com/TfTHacker/obsidian42-brat) to install this plugin before it becomes publicly listed:
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+1. Install the **BRAT** plugin from Obsidian's Community Plugins.
+2. Go to `BRAT` settings → Click **"Add a beta plugin"**.
+3. Paste the following GitHub repo URL: https://github.com/JinmuGo/obsidian-theme-by-folder
+4. Click **Install** and **Enable** the plugin!
 
-## Adding your plugin to the community plugin list
+## Configuration
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+1. Open **Settings → Theme by Folder**.
+2. Click **Add Mapping** to create a new mapping.
+3. Enter a **Mapping Name**, choose or type the **Folder Path**, and select a **Theme** from the dropdown.
+4. Repeat for additional folders as needed.
+5. (Optional) Set a **Default Theme (fallback)** for unmatched folders.
 
-## How to use
+## Usage
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+Once configured, simply open any note in your vault. The plugin will detect the note’s folder and automatically apply the corresponding theme. If no mapping is found, the Default Theme is used.
 
-## Manually installing the plugin
+## Development
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Folder Structure
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+```
+obsidian-theme-by-folder/
+├── src/
+│   ├── main.ts          # Core plugin logic
+│   ├── settings.ts      # Types and default settings
+│   ├── ui/              # UI components and renderers
+│   └── utils/           # Utility functions
+├── manifest.json        # Plugin manifest
+├── package.json         # NPM package info
+└── tsconfig.json        # TypeScript config
 ```
 
-If you have multiple URLs, you can also do:
+### Build
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+```bash
+pnpm install
+pnpm build
 ```
 
-## API Documentation
+## Contributing
 
-See https://github.com/obsidianmd/obsidian-api
+Contributions, issues, and feature requests are welcome! Please check out the [issues page](https://github.com/JinmuGo/obsidian-theme-by-folder/issues) or open a [pull request](https://github.com/JinmuGo/obsidian-theme-by-folder/pulls)
+
+## License
+
+This project is licensed under the 0BSD License. See [LICENSE](LICENSE) for details.
