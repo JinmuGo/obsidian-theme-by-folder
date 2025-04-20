@@ -2,6 +2,10 @@
 
 Automatically switch Obsidian themes based on the folder of the opened note.
 
+## Preview
+
+https://github.com/user-attachments/assets/cdf6700d-08c4-498a-8fec-ba0ab977adc3
+
 ## Features
 
 - **Auto Theme Switching**: Instantly changes your Obsidian theme when you open a note in a configured folder.
