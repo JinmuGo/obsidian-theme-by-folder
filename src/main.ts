@@ -45,7 +45,6 @@ export default class FolderThemePlugin extends Plugin {
     private applyTheme(theme: string) {
         try {
             this.app.customCss.setTheme(theme);
-            this.app.workspace.trigger("css-change");
             new Notice(`Theme "${theme}" applied`);
         } catch (e) {
             console.error(e);
