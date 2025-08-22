@@ -23,9 +23,9 @@ export const DEFAULT_SETTINGS: FolderThemeSettings = {
 export function getEffectiveValue(value: string, fallback: string): string {
     const trimmed = value.trim();
     if (trimmed) return trimmed;
-    
+
     const fallbackTrimmed = fallback.trim();
     if (fallbackTrimmed) return fallbackTrimmed;
-    
+
     return "";
 }
