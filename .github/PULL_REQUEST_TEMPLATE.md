@@ -8,5 +8,5 @@
 
 - [ ] I read and included theses actions below
 
-1. I have read the [Contributing Guide](https://github.com/JinMuGo/obsidian-markdown-flip/blob/main/.github/CONTRIBUTING.md)
+1. I have read the [Contributing Guide](https://github.com/JinMuGo/obsidian-theme-by-folder/blob/main/.github/CONTRIBUTING.md)
 2. I have written documents and tests, if needed.
