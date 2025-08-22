@@ -69,7 +69,9 @@ export default class FolderThemePlugin extends Plugin {
             const modeText = mapping.mode && mapping.mode !== "system" ? `Mode "${mapping.mode}"` : "";
             const combinedText = [themeText, modeText].filter(Boolean).join(" and ");
 
-            new Notice(`${combinedText} applied.`);
+            if (combinedText) {
+                new Notice(`${combinedText} applied.`);
+            }
         } catch (e) {
             console.error(e);
             new Notice("❌ Failed to apply theme or mode");
