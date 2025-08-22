@@ -1,6 +1,6 @@
 {
-  "name": "obsidian-sample-plugin",
-  "version": "1.1.1",
+  "name": "obsidian-theme-by-folder",
+  "version": "1.2.0",
   "description": "Automatically switch themes based on the folder of the opened note",
   "main": "main.js",
   "scripts": {

@@ -8,22 +8,23 @@ https://github.com/user-attachments/assets/cdf6700d-08c4-498a-8fec-ba0ab977adc3
 
 ## Features
 
-- **Auto Theme Switching**: Instantly changes your Obsidian theme when you open a note in a configured folder.
-- **Per-Folder Configuration**: Assign custom themes to specific vault folders.
-- **Fallback Theme**: Define a default theme to use when no folder mapping matches.
+- **Auto Theme & Mode Switching**: Instantly changes your Obsidian theme and mode (light/dark) when you open a note in a configured folder.
+- **Per-Folder Configuration**: Assign custom themes and modes to specific vault folders.
+- **Flexible Mode Options**: Choose between Light Mode, Dark Mode, or System Default for each folder.
+- **Fallback Settings**: Define default theme and mode to use when no folder mapping matches.
 - **Lightweight & Fast**: Minimal performance impact with simple path-based matching.
-- **User-Friendly UI**: Configure mappings directly in Obsidian’s Settings → Theme by Folder.
+- **User-Friendly UI**: Configure mappings directly in Obsidian's Settings → Theme by Folder.
 
 ## Installation
 
 ### Manual Installation
 
-1. Download or clone this repository into your vault’s plugins folder:
+1. Download or clone this repository into your vault's plugins folder:
     ```bash
     git clone https://github.com/JinmuGo/obsidian-theme-by-folder .obsidian/plugins/theme-by-folder
     ```
 2. In Obsidian, go to **Settings → Community Plugins** and enable **Theme by Folder**.
-3. Reload Obsidian if the plugin doesn’t appear immediately.
+3. Reload Obsidian if the plugin doesn't appear immediately.
 
 ### Via Community Plugins (BRAT)
 
@@ -38,13 +39,13 @@ You can use [BRAT (Beta Reviewer's Auto-update Tool)](https://github.com/TfTHack
 
 1. Open **Settings → Theme by Folder**.
 2. Click **Add Mapping** to create a new mapping.
-3. Enter a **Mapping Name**, choose or type the **Folder Path**, and select a **Theme** from the dropdown.
+3. Enter a **Mapping Name**, choose or type the **Folder Path**, select a **Theme** from the dropdown, and choose a **Mode** (Light/Dark/System).
 4. Repeat for additional folders as needed.
-5. (Optional) Set a **Default Theme (fallback)** for unmatched folders.
+5. (Optional) Set **Default Theme** and **Default Mode** for unmatched folders.
 
 ## Usage
 
-Once configured, simply open any note in your vault. The plugin will detect the note’s folder and automatically apply the corresponding theme. If no mapping is found, the Default Theme is used.
+Once configured, simply open any note in your vault. The plugin will detect the note's folder and automatically apply the corresponding theme and mode. If no mapping is found, the Default Theme and Mode are used.
 
 ## Development
 
