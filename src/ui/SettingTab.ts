@@ -1,6 +1,6 @@
 import { PluginSettingTab, App, Setting } from "obsidian";
 import FolderThemePlugin from "../main";
-import { FolderThemeMapping } from "src/settings";
+import { FolderThemeMapping, ThemeMode } from "../settings";
 import { getAvailableThemes } from "../utils/themeUtils";
 import { FolderSuggest } from "./FolderSuggest";
 
@@ -80,10 +80,22 @@ const renderMappingRow = (
 
         // Theme dropdown
         .addDropdown((drop) => {
-            drop.addOption("", "— keep current —");
+            drop.addOption("", "Keep Current Theme");
             getAvailableThemes(plugin.app).forEach((t) => void drop.addOption(t, t));
             drop.setValue(map.theme).onChange(async (v) => {
                 map.theme = v;
+                await plugin.saveSettings();
+            });
+        })
+
+        // Mode dropdown
+        .addDropdown((drop) => {
+            drop.addOption("", "Keep Current Mode");
+            drop.addOption("light", "Light Mode");
+            drop.addOption("dark", "Dark Mode");
+            drop.addOption("system", "System Default");
+            drop.setValue(map.mode).onChange(async (v) => {
+                map.mode = v as ThemeMode;
                 await plugin.saveSettings();
             });
         })
@@ -105,7 +117,7 @@ const renderAddMapping = (container: HTMLElement, plugin: FolderThemePlugin, ref
     new Setting(container).setName("Add new mapping").addButton((b) =>
         b.setButtonText("Add mapping").onClick(async () => {
             const idx = plugin.settings.mappings.length + 1;
-            plugin.settings.mappings.push({ name: `Mapping ${idx}`, folder: "", theme: "" });
+            plugin.settings.mappings.push({ name: `Mapping ${idx}`, folder: "", theme: "", mode: "" });
             await plugin.saveSettings();
             refresh();
         }),
@@ -114,7 +126,7 @@ const renderAddMapping = (container: HTMLElement, plugin: FolderThemePlugin, ref
 
 const renderDefaultTheme = (container: HTMLElement, plugin: FolderThemePlugin, _refresh: () => void) => {
     new Setting(container).setName("Default theme (fallback)").addDropdown((drop) => {
-        drop.addOption("", "— keep current —");
+        drop.addOption("", "Keep Current Theme");
         const themes = [];
         try {
             const customCss = plugin.app.customCss;
@@ -127,6 +139,19 @@ const renderDefaultTheme = (container: HTMLElement, plugin: FolderThemePlugin, _
         themes.forEach((t) => void drop.addOption(t, t));
         drop.setValue(plugin.settings.defaultTheme).onChange(async (v) => {
             plugin.settings.defaultTheme = v;
+            await plugin.saveSettings();
+        });
+    });
+};
+
+const renderDefaultMode = (container: HTMLElement, plugin: FolderThemePlugin, _refresh: () => void) => {
+    new Setting(container).setName("Default mode (fallback)").addDropdown((drop) => {
+        drop.addOption("", "Keep Current Mode");
+        drop.addOption("light", "Light Mode");
+        drop.addOption("dark", "Dark Mode");
+        drop.addOption("system", "System Default");
+        drop.setValue(plugin.settings.defaultMode).onChange(async (v) => {
+            plugin.settings.defaultMode = v as ThemeMode;
             await plugin.saveSettings();
         });
     });
@@ -161,8 +186,9 @@ export default class FolderThemeSettingTab extends PluginSettingTab {
             );
         });
 
-        // Controls for adding mappings and setting default theme
+        // Controls for adding mappings and setting defaults
         renderAddMapping(containerEl, this.plugin, () => this.display());
         renderDefaultTheme(containerEl, this.plugin, () => this.display());
+        renderDefaultMode(containerEl, this.plugin, () => this.display());
     }
 }
