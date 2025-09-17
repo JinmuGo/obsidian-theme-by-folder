@@ -1,6 +1,6 @@
 import { PluginSettingTab, App, Setting } from "obsidian";
 import FolderThemePlugin from "../main";
-import { FolderThemeMapping, ThemeMode } from "../settings";
+import { FolderThemeMapping, ThemeMode, OBSIDIAN_DEFAULT_THEME } from "../settings";
 import { getAvailableThemes } from "../utils/themeUtils";
 import { FolderSuggest } from "./FolderSuggest";
 
@@ -81,6 +81,7 @@ const renderMappingRow = (
         // Theme dropdown
         .addDropdown((drop) => {
             drop.addOption("", "Keep Current Theme");
+            drop.addOption(OBSIDIAN_DEFAULT_THEME, "Obsidian Default");
             getAvailableThemes(plugin.app).forEach((t) => void drop.addOption(t, t));
             drop.setValue(map.theme).onChange(async (v) => {
                 map.theme = v;
@@ -127,6 +128,7 @@ const renderAddMapping = (container: HTMLElement, plugin: FolderThemePlugin, ref
 const renderDefaultTheme = (container: HTMLElement, plugin: FolderThemePlugin, _refresh: () => void) => {
     new Setting(container).setName("Default theme (fallback)").addDropdown((drop) => {
         drop.addOption("", "Keep Current Theme");
+        drop.addOption(OBSIDIAN_DEFAULT_THEME, "Obsidian Default");
         const themes = [];
         try {
             const customCss = plugin.app.customCss;

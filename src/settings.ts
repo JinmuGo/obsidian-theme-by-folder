@@ -1,6 +1,9 @@
 export type ThemeMode = "light" | "dark" | "system" | "";
 export type ThemeType = string;
 
+// Special value to represent Obsidian's default theme
+export const OBSIDIAN_DEFAULT_THEME = "__obsidian_default__";
+
 export interface FolderThemeMapping {
     name: string;
     folder: string;
