@@ -85,20 +85,22 @@ export default class FolderThemePlugin extends Plugin {
             }
 
             // Show notification
-            let themeText = "";
-            if (themeToApply === "") {
-                themeText = this.userTheme ? `Theme "${this.userTheme}" (Global)` : "";
-            } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
-                themeText = 'Theme "Obsidian Default"';
-            } else if (themeToApply) {
-                themeText = `Theme "${themeToApply}"`;
-            }
+            if (this.settings.showNotifications) {
+                let themeText = "";
+                if (themeToApply === "") {
+                    themeText = this.userTheme ? `Theme "${this.userTheme}" (Global)` : "";
+                } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
+                    themeText = 'Theme "Obsidian Default"';
+                } else if (themeToApply) {
+                    themeText = `Theme "${themeToApply}"`;
+                }
 
-            const modeText = mapping.mode && mapping.mode !== "system" ? `Mode "${mapping.mode}"` : "";
-            const combinedText = [themeText, modeText].filter(Boolean).join(" and ");
+                const modeText = mapping.mode && mapping.mode !== "system" ? `Mode "${mapping.mode}"` : "";
+                const combinedText = [themeText, modeText].filter(Boolean).join(" and ");
 
-            if (combinedText) {
-                new Notice(`${combinedText} applied.`);
+                if (combinedText) {
+                    new Notice(`${combinedText} applied.`);
+                }
             }
         } catch (e) {
             console.error(e);

@@ -159,6 +159,18 @@ const renderDefaultMode = (container: HTMLElement, plugin: FolderThemePlugin, _r
     });
 };
 
+const renderShowNotifications = (container: HTMLElement, plugin: FolderThemePlugin, _refresh: () => void) => {
+    new Setting(container)
+        .setName("Show notifications")
+        .setDesc("Show a notification when the theme or mode is changed.")
+        .addToggle((toggle) =>
+            toggle.setValue(plugin.settings.showNotifications).onChange(async (value) => {
+                plugin.settings.showNotifications = value;
+                await plugin.saveSettings();
+            }),
+        );
+};
+
 export default class FolderThemeSettingTab extends PluginSettingTab {
     plugin: FolderThemePlugin;
     private editingIndex: number | null = null;
@@ -192,5 +204,6 @@ export default class FolderThemeSettingTab extends PluginSettingTab {
         renderAddMapping(containerEl, this.plugin, () => this.display());
         renderDefaultTheme(containerEl, this.plugin, () => this.display());
         renderDefaultMode(containerEl, this.plugin, () => this.display());
+        renderShowNotifications(containerEl, this.plugin, () => this.display());
     }
 }

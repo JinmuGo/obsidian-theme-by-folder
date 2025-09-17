@@ -15,12 +15,14 @@ export interface FolderThemeSettings {
     mappings: FolderThemeMapping[];
     defaultTheme: ThemeType;
     defaultMode: ThemeMode;
+    showNotifications: boolean;
 }
 
 export const DEFAULT_SETTINGS: FolderThemeSettings = {
     mappings: [],
     defaultTheme: "",
     defaultMode: "",
+    showNotifications: true,
 };
 
 export function getEffectiveValue(value: string, fallback: string): string {
