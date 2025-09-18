@@ -1,7 +1,7 @@
 import { Plugin, TFile, normalizePath, Notice } from "obsidian";
 
 import FolderThemeSettingTab from "./ui/SettingTab";
-import { FolderThemeSettings, DEFAULT_SETTINGS, ThemeMode, getEffectiveValue, ThemeType } from "./settings";
+import { FolderThemeSettings, DEFAULT_SETTINGS, ThemeMode, getEffectiveValue, ThemeType, OBSIDIAN_DEFAULT_THEME } from "./settings";
 
 declare module "obsidian" {
     interface App {
@@ -14,12 +14,25 @@ declare module "obsidian" {
 }
 
 export default class FolderThemePlugin extends Plugin {
-    settings: FolderThemeSettings = DEFAULT_SETTINGS;
+    settings: FolderThemeSettings = DEFAULT_SETTINGS
+    userTheme: string | null = null; // To store user's global theme
 
     async onload() {
         await this.loadSettings();
+
+        this.app.workspace.onLayoutReady(() => {
+            this.userTheme = this.app.customCss.theme;
+        });
+
         this.addSettingTab(new FolderThemeSettingTab(this.app, this));
         this.registerEvent(this.app.workspace.on("file-open", (file) => this.handleFileOpen(file)));
+    }
+
+    onunload() {
+        // Revert to the original theme when the plugin is disabled
+        if (this.userTheme !== null) {
+            this.app.customCss.setTheme(this.userTheme);
+        }
     }
 
     private handleFileOpen(file: TFile | null) {
@@ -51,12 +64,19 @@ export default class FolderThemePlugin extends Plugin {
 
     private applyThemeAndMode(mapping: { theme: ThemeType; mode: ThemeMode }) {
         try {
-            // Apply theme if specified
-            if (mapping.theme) {
-                const currentTheme = this.app.customCss.theme;
-                if (currentTheme !== mapping.theme) {
-                    this.app.customCss.setTheme(mapping.theme);
+            const themeToApply = mapping.theme;
+
+            if (themeToApply === "") { // "Keep Current Theme" should revert to user's global theme
+                if (this.userTheme !== null && this.app.customCss.theme !== this.userTheme) {
+                    this.app.customCss.setTheme(this.userTheme);
                 }
+            } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
+                // Apply Obsidian default theme by setting empty string
+                if (this.app.customCss.theme !== "") {
+                    this.app.customCss.setTheme("");
+                }
+            } else if (this.app.customCss.theme !== themeToApply) {
+                this.app.customCss.setTheme(themeToApply);
             }
 
             // Apply mode if specified
@@ -65,12 +85,22 @@ export default class FolderThemePlugin extends Plugin {
             }
 
             // Show notification
-            const themeText = mapping.theme ? `Theme "${mapping.theme}"` : "";
-            const modeText = mapping.mode && mapping.mode !== "system" ? `Mode "${mapping.mode}"` : "";
-            const combinedText = [themeText, modeText].filter(Boolean).join(" and ");
+            if (this.settings.showNotifications) {
+                let themeText = "";
+                if (themeToApply === "") {
+                    themeText = this.userTheme ? `Theme "${this.userTheme}" (Global)` : "";
+                } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
+                    themeText = 'Theme "Obsidian Default"';
+                } else if (themeToApply) {
+                    themeText = `Theme "${themeToApply}"`;
+                }
 
-            if (combinedText) {
-                new Notice(`${combinedText} applied.`);
+                const modeText = mapping.mode && mapping.mode !== "system" ? `Mode "${mapping.mode}"` : "";
+                const combinedText = [themeText, modeText].filter(Boolean).join(" and ");
+
+                if (combinedText) {
+                    new Notice(`${combinedText} applied.`);
+                }
             }
         } catch (e) {
             console.error(e);
