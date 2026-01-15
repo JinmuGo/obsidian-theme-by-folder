@@ -66,10 +66,8 @@ export default class FolderThemePlugin extends Plugin {
         try {
             const themeToApply = mapping.theme;
 
-            if (themeToApply === "") { // "Keep Current Theme" should revert to user's global theme
-                if (this.userTheme !== null && this.app.customCss.theme !== this.userTheme) {
-                    this.app.customCss.setTheme(this.userTheme);
-                }
+            if (themeToApply === "") {
+                // "Keep Current Theme" - do nothing, preserve whatever theme is currently active
             } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
                 // Apply Obsidian default theme by setting empty string
                 if (this.app.customCss.theme !== "") {
@@ -88,7 +86,8 @@ export default class FolderThemePlugin extends Plugin {
             if (this.settings.showNotifications) {
                 let themeText = "";
                 if (themeToApply === "") {
-                    themeText = this.userTheme ? `Theme "${this.userTheme}" (Global)` : "";
+                    // No theme notification for "Keep Current Theme"
+                    themeText = "";
                 } else if (themeToApply === OBSIDIAN_DEFAULT_THEME) {
                     themeText = 'Theme "Obsidian Default"';
                 } else if (themeToApply) {
