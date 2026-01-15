@@ -1,0 +1,24 @@
+/* Theme by Folder - Settings Styles */
+
+/* Allow controls to wrap and have proper spacing */
+.setting-item-control {
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+/* Prevent name from being truncated */
+.setting-item-info {
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+/* Consistent sizing for dropdowns and inputs */
+.setting-item-control > select,
+.setting-item-control > .dropdown {
+    min-width: 130px;
+}
+
+.setting-item-control > input[type="text"] {
+    min-width: 140px;
+}
