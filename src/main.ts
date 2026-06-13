@@ -79,7 +79,7 @@ export default class FolderThemePlugin extends Plugin {
 
             // Apply mode if specified
             if (mapping.mode && mapping.mode !== "system") {
-                this.applyMode(mapping.mode as ThemeMode);
+                this.applyMode(mapping.mode);
             }
 
             // Show notification
@@ -108,7 +108,7 @@ export default class FolderThemePlugin extends Plugin {
     }
 
     private applyMode(mode: ThemeMode) {
-        const body = document.body;
+        const body = activeDocument.body;
         const isDark = body.classList.contains("theme-dark");
 
         if (mode === "dark" && !isDark) {

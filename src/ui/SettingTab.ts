@@ -23,7 +23,7 @@ const renderMappingRow = (
                 const inp = text.setValue(map.name).onChange((v) => {
                     map.name = v;
                 });
-                setTimeout(() => inp.inputEl.focus(), 50);
+                activeWindow.setTimeout(() => inp.inputEl.focus(), 50);
                 inp.inputEl.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") {
                         setEditingIndex(null);
