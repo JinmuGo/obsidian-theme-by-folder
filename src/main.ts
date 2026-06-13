@@ -1,7 +1,14 @@
 import { Plugin, TFile, normalizePath, Notice } from "obsidian";
 
 import FolderThemeSettingTab from "./ui/SettingTab";
-import { FolderThemeSettings, DEFAULT_SETTINGS, ThemeMode, getEffectiveValue, ThemeType, OBSIDIAN_DEFAULT_THEME } from "./settings";
+import {
+    FolderThemeSettings,
+    DEFAULT_SETTINGS,
+    ThemeMode,
+    getEffectiveValue,
+    ThemeType,
+    OBSIDIAN_DEFAULT_THEME,
+} from "./settings";
 
 declare module "obsidian" {
     interface App {
@@ -14,7 +21,7 @@ declare module "obsidian" {
 }
 
 export default class FolderThemePlugin extends Plugin {
-    settings: FolderThemeSettings = DEFAULT_SETTINGS
+    settings: FolderThemeSettings = DEFAULT_SETTINGS;
     userTheme: string | null = null; // To store user's global theme
 
     async onload() {

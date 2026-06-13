@@ -1,3 +1,9 @@
+# Approve dependency build scripts (pnpm >=11 reads `allowBuilds` here;
+# older pnpm/CI reads `pnpm.onlyBuiltDependencies` in package.json).
+allowBuilds:
+  esbuild: true
+  lefthook: true
+
 # Force a patched flatted (pulled transitively by eslint's file cache).
 # Mirrors the `pnpm.overrides` entry in package.json so the override applies
 # on both pnpm >=10.13/11 (reads here) and older pnpm/CI (reads package.json).
