@@ -1,0 +1,13 @@
+# Git hooks managed by lefthook — https://lefthook.dev
+# Installed automatically via the "prepare" script on `pnpm install`.
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "src/*.{ts,js}"
+      run: pnpm exec prettier --write {staged_files}
+      stage_fixed: true
+    lint:
+      glob: "src/*.ts"
+      run: pnpm exec eslint {staged_files}
