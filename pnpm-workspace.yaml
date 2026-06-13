@@ -1,0 +1,5 @@
+# Force a patched flatted (pulled transitively by eslint's file cache).
+# Mirrors the `pnpm.overrides` entry in package.json so the override applies
+# on both pnpm >=10.13/11 (reads here) and older pnpm/CI (reads package.json).
+overrides:
+  flatted: '>=3.4.2'
