@@ -23,7 +23,7 @@ const renderMappingRow = (
                 const inp = text.setValue(map.name).onChange((v) => {
                     map.name = v;
                 });
-                activeWindow.setTimeout(() => inp.inputEl.focus(), 50);
+                window.setTimeout(() => inp.inputEl.focus(), 50);
                 inp.inputEl.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") {
                         setEditingIndex(null);
@@ -181,6 +181,14 @@ export default class FolderThemeSettingTab extends PluginSettingTab {
     }
 
     display(): void {
+        this.renderSettings();
+    }
+
+    // display() is deprecated since Obsidian 1.13.0 in favor of getSettingDefinitions(),
+    // but that API only exists on 1.13.0+ and we still target minAppVersion 1.5.0.
+    // So we keep display() as the framework override and delegate to renderSettings(),
+    // letting internal re-renders avoid referencing the deprecated method.
+    private renderSettings(): void {
         const { containerEl } = this;
         containerEl.empty();
 
@@ -193,17 +201,17 @@ export default class FolderThemeSettingTab extends PluginSettingTab {
                 this.editingIndex,
                 (newIndex) => {
                     this.editingIndex = newIndex;
-                    this.display();
+                    this.renderSettings();
                 },
                 this.plugin,
-                () => this.display(),
+                () => this.renderSettings(),
             );
         });
 
         // Controls for adding mappings and setting defaults
-        renderAddMapping(containerEl, this.plugin, () => this.display());
-        renderDefaultTheme(containerEl, this.plugin, () => this.display());
-        renderDefaultMode(containerEl, this.plugin, () => this.display());
-        renderShowNotifications(containerEl, this.plugin, () => this.display());
+        renderAddMapping(containerEl, this.plugin, () => this.renderSettings());
+        renderDefaultTheme(containerEl, this.plugin, () => this.renderSettings());
+        renderDefaultMode(containerEl, this.plugin, () => this.renderSettings());
+        renderShowNotifications(containerEl, this.plugin, () => this.renderSettings());
     }
 }
