@@ -1,4 +1,4 @@
-import { Plugin, TFile, normalizePath, Notice } from "obsidian";
+import { FileView, Notice, Plugin, TFile, WorkspaceLeaf, normalizePath } from "obsidian";
 
 import FolderThemeSettingTab from "./ui/SettingTab";
 import {
@@ -23,6 +23,7 @@ declare module "obsidian" {
 export default class FolderThemePlugin extends Plugin {
     settings: FolderThemeSettings = DEFAULT_SETTINGS;
     userTheme: string | null = null; // To store user's global theme
+    private lastHandledFilePath: string | null = null;
 
     async onload() {
         await this.loadSettings();
@@ -33,6 +34,7 @@ export default class FolderThemePlugin extends Plugin {
 
         this.addSettingTab(new FolderThemeSettingTab(this.app, this));
         this.registerEvent(this.app.workspace.on("file-open", (file) => this.handleFileOpen(file)));
+        this.registerEvent(this.app.workspace.on("active-leaf-change", (leaf) => this.handleActiveLeafChange(leaf)));
     }
 
     onunload() {
@@ -43,12 +45,35 @@ export default class FolderThemePlugin extends Plugin {
     }
 
     private handleFileOpen(file: TFile | null) {
-        if (!file) return;
+        if (!file) {
+            this.lastHandledFilePath = null;
+            return;
+        }
+
         const path = normalizePath(file.path);
+        if (path === this.lastHandledFilePath) return;
+
+        this.lastHandledFilePath = path;
         const mapping = this.pickMappingForPath(path);
         if (!mapping) return;
 
         this.applyThemeAndMode(mapping);
+    }
+
+    private handleActiveLeafChange(leaf: WorkspaceLeaf | null) {
+        this.handleFileOpen(this.getFileForLeaf(leaf));
+    }
+
+    private getFileForLeaf(leaf: WorkspaceLeaf | null): TFile | null {
+        if (!leaf) return null;
+
+        if (leaf.view instanceof FileView) {
+            return leaf.view.file;
+        }
+
+        // Viewer plugins commonly persist the displayed note path in their leaf state.
+        const filePath = leaf.getViewState().state?.file;
+        return typeof filePath === "string" ? this.app.vault.getFileByPath(filePath) : null;
     }
 
     private pickMappingForPath(path: string): { theme: ThemeType; mode: ThemeMode } | null {
