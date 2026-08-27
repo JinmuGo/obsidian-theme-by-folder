@@ -72,7 +72,8 @@ export default class FolderThemePlugin extends Plugin {
         }
 
         // Viewer plugins commonly persist the displayed note path in their leaf state.
-        const filePath = leaf.getViewState().state?.file;
+        const state = leaf.getViewState().state;
+        const filePath = typeof state?.file === "string" ? state.file : state?.filePath;
         return typeof filePath === "string" ? this.app.vault.getFileByPath(filePath) : null;
     }
 
